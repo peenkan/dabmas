@@ -1,26 +1,36 @@
+--Create Table DEPARTMENT with PRIMARY KEY as DNO
 
---Create Table EMPLOYEE with PRIMARY KEY as SSN
-CREATE TABLE EMPLOYEE(
-Ssn CHAR(4) PRIMARY KEY,
-Name VARCHAR(20),
-Address VARCHAR(30),
-Sex CHAR,
-Salary INT,
-Superssn CHAR(4),
-Dno int,
-FOREIGN KEY(Superssn)references employee(Ssn) on delete cascade);
-Desc EMPLOYEE;
+CREATE TABLE DEPARTMENT
+(DNO VARCHAR(20) PRIMARY KEY,
+DNAME VARCHAR(20),
+MGR_SSN VARCHAR(20),
+MGR_START_DATE DATE);
+
+DESC DEPARTMENT;
 
 ----------------------------------
 
---Create Table DEPARTMENT with PRIMARY KEY as DNO
-CREATE TABLE DEPARTMENT(
-Dno int PRIMARY KEY,
-Dname VARCHAR(10),
-Mgrssn CHAR(4),
-Mgrstartdate DATE,
-Foreign key(Mgrssn) references EMPLOYEE(Ssn) on delete cascade);
-Desc DEPARTMENT;
+--Create Table EMPLOYEE with PRIMARY KEY as SSN
+
+CREATE TABLE EMPLOYEE
+(SSN VARCHAR(20) PRIMARY KEY,
+NAME VARCHAR(20),
+ADDRESS VARCHAR(20),
+SEX CHAR(1),
+SALARY INTEGER,
+SUPERSSN VARCHAR(20),
+DNO VARCHAR(20),
+FOREIGN KEY (SUPERSSN) REFERENCES EMPLOYEE (SSN),
+FOREIGN KEY (DNO) REFERENCES DEPARTMENT (DNO));
+
+DESC EMPLOYEE;
+
+----------------------------------
+
+-- ADD FOREIGN KEY Constraint to DEPARTMENT table
+
+ALTER TABLE DEPARTMENT
+ADD FOREIGN KEY (MGR_SSN) REFERENCES EMPLOYEE(SSN);
 
 ----------------------------------
 
@@ -61,8 +71,8 @@ PRIMARY KEY (SSN, PNO));
 
 DESC WORKS_ON;
 
-----------------------------------
---Inserting records into EMPLOYEE table
+------------------------------------
+Inserting records into EMPLOYEE table
 
 INSERT INTO EMPLOYEE (SSN, NAME, ADDRESS, SEX, SALARY) VALUES
  ('ABC01','BEN SCOTT','BANGALORE','M', 450000);
@@ -197,8 +207,7 @@ INSERT INTO WORKS_ON VALUES (4, 'ABC10', 1006);
 INSERT INTO WORKS_ON VALUES (10,'ABC11', 1007);
 
 SELECT * FROM WORKS_ON;
-
-QUERIES:
+=======================================================================================================
 --Make a list of all project numbers for projects that involve an employee whose last name is ‘Scott’, either as a worker or as a manager of the department that controls the project.
 
 SELECT DISTINCT P.PNO
